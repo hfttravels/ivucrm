@@ -272,7 +272,7 @@ function FormShell({ title, children }: FormShellProps) {
   }
 
   return (
-    <div className="rounded-lg border border-stone-800 bg-stone-900 p-5">
+    <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-5">
       {title ? <h2 className="mb-4 text-lg font-semibold text-white">{title}</h2> : null}
       {children}
     </div>
@@ -368,7 +368,7 @@ function DatePickerField({
       </button>
 
       {open ? (
-        <div className="absolute left-0 top-full z-30 mt-2 w-80 rounded-lg border border-stone-700 bg-stone-950 p-3 shadow-2xl shadow-black/40">
+        <div className="absolute left-0 top-full z-30 mt-2 w-[min(20rem,calc(100vw-2rem))] rounded-lg border border-stone-700 bg-stone-950 p-3 shadow-2xl shadow-black/40">
           <div className="mb-3 flex items-center justify-between">
             <button
               type="button"
@@ -455,7 +455,7 @@ function FormActions({
   success: string | null;
 }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 md:col-span-2">
+    <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center md:col-span-2">
       <button
         type="submit"
         disabled={submitting}
@@ -463,8 +463,8 @@ function FormActions({
       >
         {submitting ? "Working..." : label}
       </button>
-      {error ? <span className="text-xs text-red-300">{error}</span> : null}
-      {success ? <span className="text-xs text-green-300">{success}</span> : null}
+      {error ? <span className="break-words text-xs text-red-300">{error}</span> : null}
+      {success ? <span className="break-words text-xs text-green-300">{success}</span> : null}
     </div>
   );
 }

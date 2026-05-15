@@ -63,8 +63,8 @@ export default function AgentFeed({ initialAgents }: Props) {
   const failedAgents = agents.filter((a) => a.status === "failed");
 
   return (
-    <div className="rounded-lg border border-stone-800 bg-stone-900 p-6">
-      <div className="mb-4 flex items-center justify-between">
+    <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-6">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <h2 className="text-lg font-semibold text-white">Agent Status</h2>
         <div className="flex gap-4 text-sm">
           <span className="text-green-400">{runningAgents.length} running</span>
@@ -72,25 +72,25 @@ export default function AgentFeed({ initialAgents }: Props) {
         </div>
       </div>
 
-      <div className="space-y-2 max-h-[600px] overflow-y-auto">
+      <div className="max-h-[600px] space-y-2 overflow-y-auto">
         {agents.map((agent) => (
           <div
             key={agent.id}
             className="rounded-md border border-stone-800 bg-stone-950 p-3"
           >
-            <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex min-w-0 items-center gap-3">
                 <StatusBadge status={agent.status} />
-                <div>
-                  <div className="text-sm font-medium text-white">
+                <div className="min-w-0">
+                  <div className="truncate text-sm font-medium text-white">
                     #{agent.agentNumber} {agent.name}
                   </div>
                   <div className="text-xs text-stone-500">{agent.category}</div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="text-right text-xs text-stone-500">
+              <div className="flex flex-wrap items-center gap-3 sm:flex-nowrap">
+                <div className="text-left text-xs text-stone-500 sm:text-right">
                   {agent.lastRunAt && (
                     <div>
                       Last run: {new Date(agent.lastRunAt).toLocaleTimeString("en-IN")}
@@ -131,7 +131,7 @@ function StatusBadge({ status }: { status: Agent["status"] }) {
 
   return (
     <span
-      className={`rounded-full px-2 py-1 text-xs font-medium ${colors[status]}`}
+      className={`shrink-0 whitespace-nowrap rounded-full px-2 py-1 text-xs font-medium ${colors[status]}`}
     >
       {status}
     </span>

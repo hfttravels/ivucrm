@@ -74,7 +74,7 @@ export default function SocialControl({ initialQueue, initialPosts }: Props) {
   return (
     <div className="space-y-6">
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         <StatCard label="Pending Review" value={String(pending.length)} color="text-yellow-400" />
         <StatCard label="Scheduled" value={String(scheduled.length)} color="text-blue-400" />
         <StatCard label="Total Reach" value={totalReach > 0 ? `${(totalReach / 1000).toFixed(1)}K` : "—"} />
@@ -82,10 +82,10 @@ export default function SocialControl({ initialQueue, initialPosts }: Props) {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 rounded-lg border border-stone-800 bg-stone-900 p-1 w-fit">
+      <div className="flex w-full gap-1 overflow-x-auto rounded-lg border border-stone-800 bg-stone-900 p-1 sm:w-fit">
         {(["queue", "scheduled", "published"] as Tab[]).map((t) => (
           <button key={t} onClick={() => setTab(t)}
-            className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors capitalize ${tab === t ? "bg-stone-700 text-white" : "text-stone-400 hover:text-white"}`}>
+            className={`whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium capitalize transition-colors ${tab === t ? "bg-stone-700 text-white" : "text-stone-400 hover:text-white"}`}>
             {t === "queue" ? `Queue (${pending.length})` : t === "scheduled" ? `Scheduled (${scheduled.length})` : `Published (${published.length})`}
           </button>
         ))}
@@ -106,7 +106,7 @@ export default function SocialControl({ initialQueue, initialPosts }: Props) {
 
       {/* Scheduled tab */}
       {tab === "scheduled" && (
-        <div className="rounded-lg border border-stone-800 bg-stone-900 p-6">
+        <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-6">
           {scheduled.length === 0 ? <Empty text="No scheduled posts" /> : (
             <div className="space-y-2">
               {scheduled.sort((a, b) => new Date(a.scheduledAt!).getTime() - new Date(b.scheduledAt!).getTime())
@@ -118,7 +118,7 @@ export default function SocialControl({ initialQueue, initialPosts }: Props) {
 
       {/* Published tab */}
       {tab === "published" && (
-        <div className="rounded-lg border border-stone-800 bg-stone-900 p-6">
+        <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-6">
           {published.length === 0 ? <Empty text="No published posts yet" /> : (
             <div className="space-y-2">
               {published.sort((a, b) => new Date(b.postedAt!).getTime() - new Date(a.postedAt!).getTime())
@@ -139,15 +139,15 @@ function ContentCard({ item, expanded, onToggle, onApprove, onReject }: {
   return (
     <div className="rounded-lg border border-stone-800 bg-stone-900">
       <button onClick={onToggle} className="w-full p-4 text-left">
-        <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center gap-2 min-w-0">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
             <span className={`shrink-0 rounded px-1.5 py-0.5 text-xs font-medium ${PLATFORM_COLORS[item.platform] ?? "bg-stone-700 text-stone-300"}`}>
               {item.platform}
             </span>
             <span className="rounded bg-stone-800 px-1.5 py-0.5 text-xs text-stone-400">
               {TYPE_LABELS[item.type] ?? item.type}
             </span>
-            <span className="truncate text-sm text-stone-300">{item.content.slice(0, 80)}…</span>
+            <span className="min-w-0 max-w-full truncate text-sm text-stone-300">{item.content.slice(0, 80)}…</span>
           </div>
           <span className="shrink-0 text-xs text-stone-600">
             {new Date(item.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
@@ -166,7 +166,7 @@ function ContentCard({ item, expanded, onToggle, onApprove, onReject }: {
           {meta.keyword != null && (
             <div className="mb-3 text-xs text-stone-500">Keyword: <span className="text-stone-300">{String(meta.keyword)}</span></div>
           )}
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button onClick={onApprove} className="rounded bg-green-900 px-4 py-2 text-sm font-medium text-green-100 hover:bg-green-800">
               Approve
             </button>
@@ -184,14 +184,14 @@ function ScheduledRow({ post }: { post: SocialPost }) {
   const scheduledAt = new Date(post.scheduledAt!);
   const isToday = scheduledAt.toDateString() === new Date().toDateString();
   return (
-    <div className="flex items-center justify-between rounded border border-stone-800 bg-stone-950 px-4 py-3">
-      <div className="flex items-center gap-3">
+    <div className="flex flex-col gap-3 rounded border border-stone-800 bg-stone-950 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex min-w-0 items-center gap-3">
         <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${PLATFORM_COLORS[post.platform] ?? "bg-stone-700 text-stone-300"}`}>
           {post.platform}
         </span>
-        <span className="text-sm text-stone-300 truncate max-w-md">{(post.caption ?? "").slice(0, 80)}…</span>
+        <span className="min-w-0 max-w-md truncate text-sm text-stone-300">{(post.caption ?? "").slice(0, 80)}…</span>
       </div>
-      <div className="text-right text-xs shrink-0">
+      <div className="shrink-0 text-left text-xs sm:text-right">
         <div className={isToday ? "text-yellow-400 font-medium" : "text-stone-400"}>
           {isToday ? "Today" : scheduledAt.toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
         </div>
@@ -203,14 +203,14 @@ function ScheduledRow({ post }: { post: SocialPost }) {
 
 function PublishedRow({ post }: { post: SocialPost }) {
   return (
-    <div className="flex items-center justify-between rounded border border-stone-800 bg-stone-950 px-4 py-3">
-      <div className="flex items-center gap-3">
+    <div className="flex flex-col gap-3 rounded border border-stone-800 bg-stone-950 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex min-w-0 items-center gap-3">
         <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${PLATFORM_COLORS[post.platform] ?? "bg-stone-700 text-stone-300"}`}>
           {post.platform}
         </span>
-        <span className="text-sm text-stone-300 truncate max-w-sm">{(post.caption ?? "").slice(0, 70)}…</span>
+        <span className="min-w-0 max-w-sm truncate text-sm text-stone-300">{(post.caption ?? "").slice(0, 70)}…</span>
       </div>
-      <div className="flex items-center gap-4 text-xs text-stone-500 shrink-0">
+      <div className="flex shrink-0 flex-wrap items-center gap-x-4 gap-y-1 text-xs text-stone-500">
         {(post.likes ?? 0) > 0 && <span>❤️ {post.likes}</span>}
         {(post.reach ?? 0) > 0 && <span>👁 {post.reach}</span>}
         {(post.comments ?? 0) > 0 && <span>💬 {post.comments}</span>}
@@ -222,9 +222,9 @@ function PublishedRow({ post }: { post: SocialPost }) {
 
 function StatCard({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
-    <div className="rounded-lg border border-stone-800 bg-stone-900 p-4">
+    <div className="min-w-0 rounded-lg border border-stone-800 bg-stone-900 p-4">
       <div className="text-xs text-stone-500">{label}</div>
-      <div className={`mt-1 text-2xl font-bold ${color ?? "text-white"}`}>{value}</div>
+      <div className={`mt-1 break-words text-xl font-bold sm:text-2xl ${color ?? "text-white"}`}>{value}</div>
     </div>
   );
 }

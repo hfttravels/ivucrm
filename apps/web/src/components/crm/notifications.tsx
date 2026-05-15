@@ -47,10 +47,10 @@ export default function NotificationsPanel({ initialNotifications }: Props) {
   }
 
   return (
-    <div className="rounded-lg border border-stone-800 bg-stone-900 p-6">
+    <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-6">
       <h2 className="mb-4 text-lg font-semibold text-white">Notifications</h2>
 
-      <div className="space-y-2 max-h-[600px] overflow-y-auto">
+      <div className="max-h-[600px] space-y-2 overflow-y-auto">
         {notifications.length === 0 ? (
           <p className="text-center text-sm text-stone-500 py-8">No new notifications</p>
         ) : (
@@ -63,9 +63,9 @@ export default function NotificationsPanel({ initialNotifications }: Props) {
                   : "border-yellow-900/50 bg-yellow-950/10"
               }`}
             >
-              <div className="flex items-start justify-between gap-2">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
                     <PriorityBadge priority={notif.priority} />
                     <span className="text-xs text-stone-500">{notif.type}</span>
                   </div>
@@ -79,7 +79,7 @@ export default function NotificationsPanel({ initialNotifications }: Props) {
                 {!notif.isRead && (
                   <button
                     onClick={() => markAsRead(notif.id)}
-                    className="text-xs text-stone-500 hover:text-white"
+                    className="self-start text-xs text-stone-500 hover:text-white sm:self-auto"
                   >
                     Mark read
                   </button>
@@ -102,7 +102,7 @@ function PriorityBadge({ priority }: { priority: Notification["priority"] }) {
   };
 
   return (
-    <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${colors[priority]}`}>
+    <span className={`whitespace-nowrap rounded px-1.5 py-0.5 text-xs font-medium ${colors[priority]}`}>
       {priority}
     </span>
   );

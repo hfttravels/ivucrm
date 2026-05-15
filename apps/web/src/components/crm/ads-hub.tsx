@@ -45,7 +45,7 @@ export default function AdsHub({ initialAds }: Props) {
   return (
     <div className="space-y-6">
       {/* KPI cards */}
-      <div className="grid grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-5 lg:gap-4">
         <StatCard label="Total Spend" value={`₹${totalSpend.toLocaleString("en-IN", { maximumFractionDigits: 0 })}`} />
         <StatCard label="Total Leads" value={String(totalLeads)} color="text-green-400" />
         <StatCard label="Avg CPL" value={avgCPL > 0 ? `₹${avgCPL.toFixed(0)}` : "—"}
@@ -55,7 +55,7 @@ export default function AdsHub({ initialAds }: Props) {
         <StatCard label="Impressions" value={totalImpressions > 0 ? `${(totalImpressions / 1000).toFixed(1)}K` : "—"} />
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-3 lg:gap-6">
         {/* Campaign breakdown */}
         <div className="rounded-lg border border-stone-800 bg-stone-900 p-5">
           <h3 className="mb-4 text-sm font-semibold text-white">Spend by Campaign</h3>
@@ -68,7 +68,7 @@ export default function AdsHub({ initialAds }: Props) {
                 .map(([name, data]) => (
                   <div key={name}>
                     <div className="mb-1 flex justify-between text-xs">
-                      <span className="truncate text-stone-300 max-w-[160px]">{name}</span>
+                      <span className="min-w-0 max-w-[160px] truncate text-stone-300">{name}</span>
                       <span className="text-stone-400">₹{data.spend.toLocaleString("en-IN", { maximumFractionDigits: 0 })}</span>
                     </div>
                     <div className="h-1.5 w-full rounded-full bg-stone-800">
@@ -86,13 +86,13 @@ export default function AdsHub({ initialAds }: Props) {
         </div>
 
         {/* Ad performance table */}
-        <div className="col-span-2 rounded-lg border border-stone-800 bg-stone-900">
-          <div className="flex items-center justify-between border-b border-stone-800 px-4 py-3">
+        <div className="rounded-lg border border-stone-800 bg-stone-900 xl:col-span-2">
+          <div className="flex flex-col gap-3 border-b border-stone-800 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="text-sm font-semibold text-white">Ad Performance</h3>
-            <div className="flex gap-1">
+            <div className="flex gap-1 overflow-x-auto pb-1 sm:overflow-visible sm:pb-0">
               {(["spend", "leads", "cpl", "ctr"] as const).map((s) => (
                 <button key={s} onClick={() => setSort(s)}
-                  className={`rounded px-2 py-1 text-xs font-medium uppercase transition-colors ${sort === s ? "bg-stone-700 text-white" : "text-stone-500 hover:text-white"}`}>
+                  className={`whitespace-nowrap rounded px-2 py-1 text-xs font-medium uppercase transition-colors ${sort === s ? "bg-stone-700 text-white" : "text-stone-500 hover:text-white"}`}>
                   {s}
                 </button>
               ))}
@@ -102,16 +102,18 @@ export default function AdsHub({ initialAds }: Props) {
           {sorted.length === 0 ? (
             <p className="py-12 text-center text-sm text-stone-500">No ad data yet — run Agent #24 to sync</p>
           ) : (
-            <div className="divide-y divide-stone-800/40">
-              <div className="grid grid-cols-12 px-4 py-2 text-xs font-medium text-stone-500">
-                <span className="col-span-4">Ad</span>
-                <span className="col-span-2 text-right">Spend</span>
-                <span className="col-span-2 text-right">Leads</span>
-                <span className="col-span-2 text-right">CPL</span>
-                <span className="col-span-2 text-right">CTR</span>
-              </div>
-              <div className="max-h-[420px] overflow-y-auto divide-y divide-stone-800/20">
-                {sorted.map((ad) => <AdRow key={ad.id} ad={ad} />)}
+            <div className="overflow-x-auto">
+              <div className="min-w-[640px] divide-y divide-stone-800/40">
+                <div className="grid grid-cols-12 px-4 py-2 text-xs font-medium text-stone-500">
+                  <span className="col-span-4">Ad</span>
+                  <span className="col-span-2 text-right">Spend</span>
+                  <span className="col-span-2 text-right">Leads</span>
+                  <span className="col-span-2 text-right">CPL</span>
+                  <span className="col-span-2 text-right">CTR</span>
+                </div>
+                <div className="max-h-[420px] overflow-y-auto divide-y divide-stone-800/20">
+                  {sorted.map((ad) => <AdRow key={ad.id} ad={ad} />)}
+                </div>
               </div>
             </div>
           )}
@@ -150,9 +152,9 @@ function AdRow({ ad }: { ad: MetaAdPerformance }) {
 
 function StatCard({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
-    <div className="rounded-lg border border-stone-800 bg-stone-900 p-4">
+    <div className="min-w-0 rounded-lg border border-stone-800 bg-stone-900 p-4">
       <div className="text-xs text-stone-500">{label}</div>
-      <div className={`mt-1 text-2xl font-bold ${color ?? "text-white"}`}>{value}</div>
+      <div className={`mt-1 break-words text-xl font-bold sm:text-2xl ${color ?? "text-white"}`}>{value}</div>
     </div>
   );
 }

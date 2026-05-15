@@ -38,43 +38,45 @@ export default function SeoIntelligence({ initialReports, agents }: Props) {
   return (
     <div className="space-y-6">
       {/* Stats */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         <StatCard label="Keywords Tracked" value={String(reports.length)} />
         <StatCard label="Avg Position" value={String(avgPosition)} />
         <StatCard label="Top 10 Rankings" value={String(top10Count)} color="text-green-400" />
         <StatCard label="Quick Wins" value={String(quickWins)} color="text-yellow-400" sub="pos 4–20" />
       </div>
 
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-3 lg:gap-6">
         {/* Rankings table */}
-        <div className="col-span-2 rounded-lg border border-stone-800 bg-stone-900">
-          <div className="flex items-center justify-between gap-4 border-b border-stone-800 p-4">
-            <div className="flex gap-1">
+        <div className="rounded-lg border border-stone-800 bg-stone-900 xl:col-span-2">
+          <div className="flex flex-col gap-3 border-b border-stone-800 p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex gap-1 overflow-x-auto pb-1 sm:overflow-visible sm:pb-0">
               {(["all", "quick_wins", "top10", "declining"] as Filter[]).map((f) => (
                 <button key={f} onClick={() => setFilter(f)}
-                  className={`rounded px-3 py-1 text-xs font-medium transition-colors ${filter === f ? "bg-stone-700 text-white" : "text-stone-400 hover:text-white"}`}>
+                  className={`whitespace-nowrap rounded px-3 py-1 text-xs font-medium transition-colors ${filter === f ? "bg-stone-700 text-white" : "text-stone-400 hover:text-white"}`}>
                   {f === "quick_wins" ? "Quick Wins" : f === "top10" ? "Top 10" : f === "declining" ? "Declining" : "All"}
                 </button>
               ))}
             </div>
             <input value={search} onChange={(e) => setSearch(e.target.value)}
               placeholder="Search keywords…"
-              className="rounded border border-stone-700 bg-stone-950 px-3 py-1 text-xs text-white placeholder-stone-600 w-48" />
+              className="w-full rounded border border-stone-700 bg-stone-950 px-3 py-2 text-xs text-white placeholder-stone-600 sm:w-48 sm:py-1" />
           </div>
 
           {filtered.length === 0 ? (
             <p className="py-12 text-center text-sm text-stone-500">No keywords match this filter</p>
           ) : (
-            <div className="divide-y divide-stone-800/50">
-              <div className="grid grid-cols-12 px-4 py-2 text-xs font-medium text-stone-500">
-                <span className="col-span-5">Keyword</span>
-                <span className="col-span-2 text-right">Position</span>
-                <span className="col-span-2 text-right">Change</span>
-                <span className="col-span-2 text-right">Clicks</span>
-                <span className="col-span-1 text-right">CTR</span>
-              </div>
-              <div className="max-h-[500px] overflow-y-auto divide-y divide-stone-800/30">
-                {filtered.map((r) => <KeywordRow key={r.id} report={r} />)}
+            <div className="overflow-x-auto">
+              <div className="min-w-[640px] divide-y divide-stone-800/50">
+                <div className="grid grid-cols-12 px-4 py-2 text-xs font-medium text-stone-500">
+                  <span className="col-span-5">Keyword</span>
+                  <span className="col-span-2 text-right">Position</span>
+                  <span className="col-span-2 text-right">Change</span>
+                  <span className="col-span-2 text-right">Clicks</span>
+                  <span className="col-span-1 text-right">CTR</span>
+                </div>
+                <div className="max-h-[500px] overflow-y-auto divide-y divide-stone-800/30">
+                  {filtered.map((r) => <KeywordRow key={r.id} report={r} />)}
+                </div>
               </div>
             </div>
           )}
@@ -154,8 +156,8 @@ function AgentRow({ agent }: { agent: Agent }) {
     completed: "text-blue-400", failed: "text-red-400", retrying: "text-yellow-400",
   };
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-xs text-stone-400">#{agent.agentNumber} {agent.name}</span>
+    <div className="flex items-center justify-between gap-3">
+      <span className="min-w-0 truncate text-xs text-stone-400">#{agent.agentNumber} {agent.name}</span>
       <span className={`text-xs font-medium ${colors[agent.status] ?? "text-stone-500"}`}>{agent.status}</span>
     </div>
   );
@@ -163,9 +165,9 @@ function AgentRow({ agent }: { agent: Agent }) {
 
 function StatCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
   return (
-    <div className="rounded-lg border border-stone-800 bg-stone-900 p-4">
+    <div className="min-w-0 rounded-lg border border-stone-800 bg-stone-900 p-4">
       <div className="text-xs text-stone-500">{label}</div>
-      <div className={`mt-1 text-2xl font-bold ${color ?? "text-white"}`}>{value}</div>
+      <div className={`mt-1 break-words text-xl font-bold sm:text-2xl ${color ?? "text-white"}`}>{value}</div>
       {sub && <div className="mt-0.5 text-xs text-stone-600">{sub}</div>}
     </div>
   );

@@ -29,7 +29,7 @@ export default function RevenueChart({ packages, agents, recentNotifications }: 
   return (
     <div className="space-y-6">
       {/* Summary */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4">
         <StatCard label="Confirmed Revenue" value={`₹${(totalConfirmed / 100000).toFixed(1)}L`} sub="from filled seats" color="text-green-400" />
         <StatCard label="Projected Revenue" value={`₹${(totalProjected / 100000).toFixed(1)}L`} sub="incl. projected fills" color="text-blue-400" />
         <StatCard
@@ -41,26 +41,28 @@ export default function RevenueChart({ packages, agents, recentNotifications }: 
       </div>
 
       {/* Bar chart */}
-      <div className="rounded-lg border border-stone-800 bg-stone-900 p-6">
+      <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-6">
         <h2 className="mb-6 text-lg font-semibold text-white">Monthly Revenue Forecast</h2>
         {forecast.length === 0 ? (
           <p className="py-8 text-center text-sm text-stone-500">No upcoming packages found</p>
         ) : (
-          <div className="flex items-end gap-4">
-            {forecast.map((m) => (
-              <MonthBar key={m.month} data={m} maxVal={maxVal} />
-            ))}
+          <div className="overflow-x-auto">
+            <div className="flex min-w-[520px] items-end gap-4">
+              {forecast.map((m) => (
+                <MonthBar key={m.month} data={m} maxVal={maxVal} />
+              ))}
+            </div>
           </div>
         )}
-        <div className="mt-4 flex items-center gap-6 text-xs text-stone-500">
+        <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-stone-500">
           <span className="flex items-center gap-1.5"><span className="inline-block h-2 w-3 rounded bg-green-600" /> Confirmed</span>
           <span className="flex items-center gap-1.5"><span className="inline-block h-2 w-3 rounded bg-blue-800" /> Projected</span>
         </div>
       </div>
 
       {/* Agent status + recent alerts */}
-      <div className="grid grid-cols-2 gap-6">
-        <div className="rounded-lg border border-stone-800 bg-stone-900 p-6">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
+        <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-6">
           <h2 className="mb-4 text-lg font-semibold text-white">Pricing Agents</h2>
           <div className="space-y-3">
             {[fillAgent, pricingAgent, forecastAgent].filter(Boolean).map((a) => (
@@ -69,7 +71,7 @@ export default function RevenueChart({ packages, agents, recentNotifications }: 
           </div>
         </div>
 
-        <div className="rounded-lg border border-stone-800 bg-stone-900 p-6">
+        <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-6">
           <h2 className="mb-4 text-lg font-semibold text-white">Recent Alerts</h2>
           {recentNotifications.length === 0 ? (
             <p className="py-4 text-center text-sm text-stone-500">No recent alerts</p>
@@ -159,8 +161,8 @@ function AgentStatusRow({ agent }: { agent: Agent }) {
     retrying: "text-yellow-400",
   };
   return (
-    <div className="flex items-center justify-between rounded border border-stone-800 bg-stone-950 px-3 py-2">
-      <div>
+    <div className="flex items-center justify-between gap-3 rounded border border-stone-800 bg-stone-950 px-3 py-2">
+      <div className="min-w-0">
         <div className="text-xs font-medium text-white">#{agent.agentNumber} {agent.name}</div>
         {agent.lastRunAt && (
           <div className="text-xs text-stone-600">
@@ -168,7 +170,7 @@ function AgentStatusRow({ agent }: { agent: Agent }) {
           </div>
         )}
       </div>
-      <span className={`text-xs font-medium ${colors[agent.status] ?? "text-stone-400"}`}>
+      <span className={`shrink-0 text-xs font-medium ${colors[agent.status] ?? "text-stone-400"}`}>
         {agent.status}
       </span>
     </div>
@@ -177,9 +179,9 @@ function AgentStatusRow({ agent }: { agent: Agent }) {
 
 function StatCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
   return (
-    <div className="rounded-lg border border-stone-800 bg-stone-900 p-4">
+    <div className="min-w-0 rounded-lg border border-stone-800 bg-stone-900 p-4">
       <div className="text-xs text-stone-500">{label}</div>
-      <div className={`mt-1 text-2xl font-bold ${color ?? "text-white"}`}>{value}</div>
+      <div className={`mt-1 break-words text-xl font-bold sm:text-2xl ${color ?? "text-white"}`}>{value}</div>
       {sub && <div className="mt-0.5 text-xs text-stone-500">{sub}</div>}
     </div>
   );

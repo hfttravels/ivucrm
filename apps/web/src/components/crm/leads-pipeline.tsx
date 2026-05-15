@@ -57,7 +57,7 @@ export default function LeadsPipeline({ initialLeads }: Props) {
       <AddLeadForm onCreated={(lead) => setLeads((prev) => [lead, ...prev])} />
 
       {/* Summary */}
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         <StatCard label="Total Leads" value={String(leads.length)} />
         <StatCard label="Qualified" value={String((byStatus.qualified?.length ?? 0) + (byStatus.proposal_sent?.length ?? 0) + (byStatus.negotiating?.length ?? 0))} sub="in pipeline" />
         <StatCard label="Booked" value={String(byStatus.booked?.length ?? 0)} color="text-green-400" />
@@ -65,7 +65,7 @@ export default function LeadsPipeline({ initialLeads }: Props) {
       </div>
 
       {/* Filter tabs */}
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
         <FilterTab label="All" value="all" active={filter} onClick={setFilter} count={leads.length} />
         {STATUSES.map((s) => (
           <FilterTab key={s} label={STATUS_LABELS[s]} value={s} active={filter} onClick={setFilter} count={byStatus[s]?.length ?? 0} />
@@ -73,10 +73,10 @@ export default function LeadsPipeline({ initialLeads }: Props) {
       </div>
 
       {/* Lead list + detail panel */}
-      <div className="flex gap-6">
+      <div className="flex flex-col gap-4 xl:flex-row lg:gap-6">
         <div className="flex-1 space-y-2 min-w-0">
           {filtered.length === 0 ? (
-            <div className="rounded-lg border border-stone-800 bg-stone-900 p-8 text-center text-sm text-stone-500">
+            <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 text-center text-sm text-stone-500 sm:p-8">
               No leads in this stage
             </div>
           ) : (
@@ -92,7 +92,7 @@ export default function LeadsPipeline({ initialLeads }: Props) {
         </div>
 
         {selected && (
-          <div className="w-80 shrink-0">
+          <div className="w-full shrink-0 xl:w-80">
             <LeadDetail lead={selected} onClose={() => setSelected(null)} />
           </div>
         )}
@@ -112,24 +112,24 @@ function LeadRow({ lead, selected, onClick }: { lead: Lead; selected: boolean; o
         selected ? "border-blue-700 bg-blue-950/20" : `${STATUS_COLORS[lead.status]} hover:border-stone-600`
       }`}
     >
-      <div className="flex items-start justify-between gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm font-medium text-white truncate">{lead.name ?? "Unknown"}</span>
             <StatusPill status={lead.status} />
           </div>
-          <div className="mt-0.5 flex items-center gap-3 text-xs text-stone-500">
+          <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-500">
             <span>{lead.whatsappNumber}</span>
             {lead.destinationInterest && <span>→ {lead.destinationInterest}</span>}
             {lead.travelMonth && <span>· {lead.travelMonth}</span>}
           </div>
-          <div className="mt-1 flex items-center gap-3 text-xs text-stone-600">
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-stone-600">
             <span>{lead.source.replace(/_/g, " ")}</span>
             {lead.groupSize && <span>· {lead.groupSize} pax</span>}
             {lead.budget && <span>· ₹{lead.budget.toLocaleString("en-IN")}/person</span>}
           </div>
         </div>
-        <div className="text-right shrink-0">
+        <div className="shrink-0 text-left sm:text-right">
           <div className={`text-lg font-bold ${scoreColor}`}>{score}</div>
           <div className="text-xs text-stone-600">score</div>
         </div>
@@ -142,7 +142,7 @@ function LeadDetail({ lead, onClose }: { lead: Lead; onClose: () => void }) {
   const history = Array.isArray(lead.conversationHistory) ? lead.conversationHistory as Record<string, string>[] : [];
 
   return (
-    <div className="rounded-lg border border-stone-700 bg-stone-900 p-5 sticky top-0">
+    <div className="rounded-lg border border-stone-700 bg-stone-900 p-5 xl:sticky xl:top-4">
       <div className="mb-4 flex items-start justify-between">
         <div>
           <div className="text-sm font-semibold text-white">{lead.name ?? "Unknown"}</div>
@@ -207,7 +207,7 @@ function Row({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-2">
       <span className="text-stone-500">{label}</span>
-      <span className="text-stone-300 text-right">{value}</span>
+      <span className="min-w-0 break-words text-right text-stone-300">{value}</span>
     </div>
   );
 }
@@ -224,7 +224,7 @@ function StatusPill({ status }: { status: string }) {
     unresponsive: "bg-stone-800 text-stone-500",
   };
   return (
-    <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${colors[status] ?? "bg-stone-700 text-stone-300"}`}>
+    <span className={`whitespace-nowrap rounded px-1.5 py-0.5 text-xs font-medium ${colors[status] ?? "bg-stone-700 text-stone-300"}`}>
       {STATUS_LABELS[status] ?? status}
     </span>
   );
@@ -232,9 +232,9 @@ function StatusPill({ status }: { status: string }) {
 
 function StatCard({ label, value, sub, color }: { label: string; value: string; sub?: string; color?: string }) {
   return (
-    <div className="rounded-lg border border-stone-800 bg-stone-900 p-4">
+    <div className="min-w-0 rounded-lg border border-stone-800 bg-stone-900 p-4">
       <div className="text-xs text-stone-500">{label}</div>
-      <div className={`mt-1 text-2xl font-bold ${color ?? "text-white"}`}>{value}</div>
+      <div className={`mt-1 break-words text-xl font-bold sm:text-2xl ${color ?? "text-white"}`}>{value}</div>
       {sub && <div className="mt-0.5 text-xs text-stone-500">{sub}</div>}
     </div>
   );
@@ -244,7 +244,7 @@ function FilterTab({ label, value, active, onClick, count }: { label: string; va
   return (
     <button
       onClick={() => onClick(value)}
-      className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+      className={`whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
         active === value ? "bg-stone-700 text-white" : "text-stone-400 hover:text-white"
       }`}
     >

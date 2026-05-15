@@ -36,8 +36,8 @@ export default function ApprovalQueue({ initialContent }: Props) {
   }
 
   return (
-    <div className="rounded-lg border border-stone-800 bg-stone-900 p-6">
-      <div className="mb-4 flex items-center justify-between">
+    <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-6">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-lg font-semibold text-white">Approval Queue</h2>
         <span className="text-sm text-stone-400">{queue.length} pending</span>
       </div>
@@ -84,9 +84,9 @@ function ContentCard({
 
   return (
     <div className="rounded-md border border-stone-800 bg-stone-950 p-4">
-      <div className="mb-3 flex items-start justify-between">
+      <div className="mb-3 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="rounded bg-stone-800 px-2 py-1 text-xs font-medium text-stone-300">
               {item.type}
             </span>
@@ -115,9 +115,9 @@ function ContentCard({
             placeholder="Rejection reason..."
             value={rejectReason}
             onChange={(e) => setRejectReason(e.target.value)}
-            className="w-full rounded border border-stone-700 bg-stone-900 px-3 py-2 text-sm text-white placeholder-stone-500"
+          className="w-full rounded border border-stone-700 bg-stone-900 px-3 py-2 text-sm text-white placeholder-stone-500"
           />
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <button
               onClick={() => {
                 if (rejectReason.trim()) {
@@ -139,7 +139,7 @@ function ContentCard({
           </div>
         </div>
       ) : (
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <button
             onClick={onApprove}
             className="rounded bg-green-900 px-4 py-2 text-sm font-medium text-green-100 hover:bg-green-800"

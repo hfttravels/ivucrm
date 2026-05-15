@@ -27,7 +27,7 @@ export default function PackagesTable({ initialPackages }: Props) {
       <AddPackageForm onCreated={(pkg) => setPackages((prev) => [pkg, ...prev])} />
 
       {/* Summary cards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4">
         <StatCard label="Active Packages" value={String(active.length)} />
         <StatCard
           label="Overall Fill Rate"
@@ -42,7 +42,7 @@ export default function PackagesTable({ initialPackages }: Props) {
       </div>
 
       {/* Active packages */}
-      <div className="rounded-lg border border-stone-800 bg-stone-900 p-6">
+      <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-6">
         <h2 className="mb-4 text-lg font-semibold text-white">Active Packages</h2>
         {active.length === 0 ? (
           <p className="py-8 text-center text-sm text-stone-500">No active packages</p>
@@ -57,7 +57,7 @@ export default function PackagesTable({ initialPackages }: Props) {
 
       {/* Other packages */}
       {other.length > 0 && (
-        <div className="rounded-lg border border-stone-800 bg-stone-900 p-6">
+        <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-6">
           <h2 className="mb-4 text-lg font-semibold text-white">Other Packages</h2>
           <div className="space-y-3">
             {other.map((pkg) => (
@@ -84,10 +84,10 @@ function PackageRow({ pkg }: { pkg: Package }) {
 
   return (
     <div className="rounded-md border border-stone-800 bg-stone-950 p-4">
-      <div className="mb-3 flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-white">{pkg.title}</span>
+      <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="min-w-0 break-words text-sm font-medium text-white">{pkg.title}</span>
             <StatusBadge status={pkg.status} />
           </div>
           <div className="mt-0.5 text-xs text-stone-500">
@@ -95,14 +95,14 @@ function PackageRow({ pkg }: { pkg: Package }) {
             {daysUntil > 0 && <span className="ml-1 text-stone-600">({daysUntil}d away)</span>}
           </div>
         </div>
-        <div className="text-right text-xs text-stone-400">
+        <div className="text-left text-xs text-stone-400 sm:text-right">
           <div className="font-medium text-white">₹{pkg.priceMin.toLocaleString("en-IN")}–{pkg.priceMax.toLocaleString("en-IN")}</div>
           <div className="text-stone-500">₹{(confirmedRev / 100000).toFixed(1)}L confirmed</div>
         </div>
       </div>
 
       {/* Fill rate bar */}
-      <div className="mb-1 flex items-center justify-between text-xs text-stone-400">
+      <div className="mb-1 flex flex-wrap items-center justify-between gap-2 text-xs text-stone-400">
         <span>{pkg.seatsFilled} / {pkg.seatsTotal} seats filled</span>
         <span className={fillRate >= 80 ? "text-green-400" : fillRate >= 50 ? "text-yellow-400" : "text-red-400"}>
           {fillRate.toFixed(0)}% · {seatsLeft} left
@@ -120,9 +120,9 @@ function PackageRow({ pkg }: { pkg: Package }) {
 
 function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded-lg border border-stone-800 bg-stone-900 p-4">
+    <div className="min-w-0 rounded-lg border border-stone-800 bg-stone-900 p-4">
       <div className="text-xs text-stone-500">{label}</div>
-      <div className="mt-1 text-2xl font-bold text-white">{value}</div>
+      <div className="mt-1 break-words text-xl font-bold text-white sm:text-2xl">{value}</div>
       {sub && <div className="mt-0.5 text-xs text-stone-500">{sub}</div>}
     </div>
   );
@@ -138,7 +138,7 @@ function StatusBadge({ status }: { status: Package["status"] }) {
     cancelled: "bg-red-900 text-red-400",
   };
   return (
-    <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${styles[status] ?? styles.draft}`}>
+    <span className={`whitespace-nowrap rounded px-1.5 py-0.5 text-xs font-medium ${styles[status] ?? styles.draft}`}>
       {status.replace("_", " ")}
     </span>
   );
