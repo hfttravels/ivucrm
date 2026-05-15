@@ -49,10 +49,10 @@ export default function SeoIntelligence({ initialReports, agents }: Props) {
         {/* Rankings table */}
         <div className="rounded-lg border border-stone-800 bg-stone-900 xl:col-span-2">
           <div className="flex flex-col gap-3 border-b border-stone-800 p-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex gap-1 overflow-x-auto pb-1 sm:overflow-visible sm:pb-0">
+            <div className="flex flex-wrap gap-1">
               {(["all", "quick_wins", "top10", "declining"] as Filter[]).map((f) => (
                 <button key={f} onClick={() => setFilter(f)}
-                  className={`whitespace-nowrap rounded px-3 py-1 text-xs font-medium transition-colors ${filter === f ? "bg-stone-700 text-white" : "text-stone-400 hover:text-white"}`}>
+                  className={`rounded px-3 py-1 text-xs font-medium transition-colors ${filter === f ? "bg-stone-700 text-white" : "text-stone-400 hover:text-white"}`}>
                   {f === "quick_wins" ? "Quick Wins" : f === "top10" ? "Top 10" : f === "declining" ? "Declining" : "All"}
                 </button>
               ))}
@@ -65,9 +65,9 @@ export default function SeoIntelligence({ initialReports, agents }: Props) {
           {filtered.length === 0 ? (
             <p className="py-12 text-center text-sm text-stone-500">No keywords match this filter</p>
           ) : (
-            <div className="overflow-x-auto">
-              <div className="min-w-[640px] divide-y divide-stone-800/50">
-                <div className="grid grid-cols-12 px-4 py-2 text-xs font-medium text-stone-500">
+            <div className="overflow-hidden">
+              <div className="w-full divide-y divide-stone-800/50">
+                <div className="grid grid-cols-12 px-2 py-2 text-[11px] font-medium text-stone-500 sm:px-4 sm:text-xs">
                   <span className="col-span-5">Keyword</span>
                   <span className="col-span-2 text-right">Position</span>
                   <span className="col-span-2 text-right">Change</span>
@@ -125,12 +125,12 @@ function KeywordRow({ report }: { report: SeoReport }) {
   const posColor = pos <= 3 ? "text-green-400" : pos <= 10 ? "text-blue-400" : pos <= 20 ? "text-yellow-400" : "text-stone-400";
 
   return (
-    <div className="grid grid-cols-12 items-center px-4 py-2.5 hover:bg-stone-800/30 transition-colors">
+    <div className="grid grid-cols-12 items-center px-2 py-2.5 transition-colors hover:bg-stone-800/30 sm:px-4">
       <div className="col-span-5 min-w-0">
         <div className="truncate text-sm text-stone-200">{report.keyword}</div>
         <div className="truncate text-xs text-stone-600">{report.pageUrl}</div>
       </div>
-      <div className={`col-span-2 text-right text-sm font-medium ${posColor}`}>
+      <div className={`col-span-2 text-right text-xs font-medium sm:text-sm ${posColor}`}>
         {pos > 0 ? pos.toFixed(0) : "—"}
       </div>
       <div className="col-span-2 text-right text-xs">

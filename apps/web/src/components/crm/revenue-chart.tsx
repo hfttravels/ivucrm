@@ -46,8 +46,8 @@ export default function RevenueChart({ packages, agents, recentNotifications }: 
         {forecast.length === 0 ? (
           <p className="py-8 text-center text-sm text-stone-500">No upcoming packages found</p>
         ) : (
-          <div className="overflow-x-auto">
-            <div className="flex min-w-[520px] items-end gap-4">
+          <div className="overflow-hidden">
+            <div className="flex w-full items-end gap-2 sm:gap-4">
               {forecast.map((m) => (
                 <MonthBar key={m.month} data={m} maxVal={maxVal} />
               ))}

@@ -18,7 +18,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <div className="flex h-14 items-center px-4">
           <h1 className="text-base font-bold text-white">HFT CRM</h1>
         </div>
-        <nav className="flex gap-1 overflow-x-auto px-3 pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <nav className="grid grid-cols-2 gap-1 px-3 pb-3 sm:grid-cols-4">
           {navItems.map((item) => (
             <NavLink key={item.href} href={item.href} label={item.label} mobile />
           ))}
@@ -48,7 +48,7 @@ function NavLink({ href, label, mobile = false }: { href: string; label: string;
       href={href}
       className={
         mobile
-          ? "whitespace-nowrap rounded-md bg-stone-900 px-3 py-2 text-xs font-medium text-stone-300 hover:bg-stone-800 hover:text-white"
+          ? "block rounded-md bg-stone-900 px-2 py-2 text-center text-xs font-medium leading-tight text-stone-300 hover:bg-stone-800 hover:text-white"
           : "block rounded-md px-3 py-2 text-sm text-stone-300 hover:bg-stone-800 hover:text-white"
       }
     >

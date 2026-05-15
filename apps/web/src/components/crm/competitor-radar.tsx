@@ -61,9 +61,9 @@ export default function CompetitorRadar({ initialAds }: Props) {
           {keywords.length === 0 ? (
             <p className="py-12 text-center text-sm text-stone-500">No ranking data yet — run Agent #9 to sync</p>
           ) : (
-            <div className="overflow-x-auto">
-              <div className="min-w-[700px] divide-y divide-stone-800/40">
-                <div className="grid grid-cols-12 px-4 py-2 text-xs font-medium text-stone-500">
+            <div className="overflow-hidden">
+              <div className="w-full divide-y divide-stone-800/40">
+                <div className="grid grid-cols-12 px-2 py-2 text-[11px] font-medium text-stone-500 sm:px-4 sm:text-xs">
                   <span className="col-span-4">Keyword</span>
                   <span className="col-span-2 text-center text-green-400">Us</span>
                   {COMPETITORS.map((c) => (
@@ -74,9 +74,9 @@ export default function CompetitorRadar({ initialAds }: Props) {
                 </div>
                 <div className="max-h-[440px] overflow-y-auto divide-y divide-stone-800/20">
                   {keywords.map(([keyword, positions]) => (
-                    <div key={keyword} className="grid grid-cols-12 items-center px-4 py-2.5 hover:bg-stone-800/30">
-                      <span className="col-span-4 truncate text-sm text-stone-300">{keyword}</span>
-                      <span className={`col-span-2 text-center text-sm font-medium ${
+                    <div key={keyword} className="grid grid-cols-12 items-center px-2 py-2.5 hover:bg-stone-800/30 sm:px-4">
+                      <span className="col-span-4 truncate text-xs text-stone-300 sm:text-sm">{keyword}</span>
+                      <span className={`col-span-2 text-center text-xs font-medium sm:text-sm ${
                         (positions.our ?? 99) <= 3 ? "text-green-400" :
                         (positions.our ?? 99) <= 10 ? "text-blue-400" : "text-stone-400"
                       }`}>
@@ -86,7 +86,7 @@ export default function CompetitorRadar({ initialAds }: Props) {
                         const theirPos = positions[c];
                         const weWin = theirPos && positions.our && positions.our < theirPos;
                         return (
-                          <span key={c} className={`col-span-2 text-center text-sm ${
+                          <span key={c} className={`col-span-2 text-center text-xs sm:text-sm ${
                             !theirPos ? "text-stone-700" :
                             weWin ? "text-stone-500" : "text-red-400 font-medium"
                           }`}>

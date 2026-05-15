@@ -82,10 +82,10 @@ export default function SocialControl({ initialQueue, initialPosts }: Props) {
       </div>
 
       {/* Tabs */}
-      <div className="flex w-full gap-1 overflow-x-auto rounded-lg border border-stone-800 bg-stone-900 p-1 sm:w-fit">
+      <div className="flex w-full flex-wrap gap-1 rounded-lg border border-stone-800 bg-stone-900 p-1 sm:w-fit">
         {(["queue", "scheduled", "published"] as Tab[]).map((t) => (
           <button key={t} onClick={() => setTab(t)}
-            className={`whitespace-nowrap rounded-md px-4 py-1.5 text-sm font-medium capitalize transition-colors ${tab === t ? "bg-stone-700 text-white" : "text-stone-400 hover:text-white"}`}>
+            className={`rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-colors sm:px-4 ${tab === t ? "bg-stone-700 text-white" : "text-stone-400 hover:text-white"}`}>
             {t === "queue" ? `Queue (${pending.length})` : t === "scheduled" ? `Scheduled (${scheduled.length})` : `Published (${published.length})`}
           </button>
         ))}

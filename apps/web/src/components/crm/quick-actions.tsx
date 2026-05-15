@@ -14,7 +14,7 @@ export default function QuickActions() {
     <div className="rounded-lg border border-stone-800 bg-stone-900 p-4 sm:p-5">
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between">
         <h2 className="text-lg font-semibold text-white">Quick Actions</h2>
-        <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
+        <div className="flex flex-wrap gap-2">
           <ActionButton label="Add Lead" value="lead" active={active} onClick={setActive} />
           <ActionButton label="Add Package" value="package" active={active} onClick={setActive} />
           <ActionButton label="Queue Content" value="content" active={active} onClick={setActive} />
@@ -108,7 +108,7 @@ function ActionButton({
     <button
       type="button"
       onClick={() => onClick(value)}
-      className={`whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+      className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
         active === value ? "bg-white text-stone-950" : "bg-stone-800 text-stone-300 hover:text-white"
       }`}
     >

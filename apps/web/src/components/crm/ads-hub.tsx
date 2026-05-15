@@ -89,10 +89,10 @@ export default function AdsHub({ initialAds }: Props) {
         <div className="rounded-lg border border-stone-800 bg-stone-900 xl:col-span-2">
           <div className="flex flex-col gap-3 border-b border-stone-800 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <h3 className="text-sm font-semibold text-white">Ad Performance</h3>
-            <div className="flex gap-1 overflow-x-auto pb-1 sm:overflow-visible sm:pb-0">
+            <div className="flex flex-wrap gap-1">
               {(["spend", "leads", "cpl", "ctr"] as const).map((s) => (
                 <button key={s} onClick={() => setSort(s)}
-                  className={`whitespace-nowrap rounded px-2 py-1 text-xs font-medium uppercase transition-colors ${sort === s ? "bg-stone-700 text-white" : "text-stone-500 hover:text-white"}`}>
+                  className={`rounded px-2 py-1 text-xs font-medium uppercase transition-colors ${sort === s ? "bg-stone-700 text-white" : "text-stone-500 hover:text-white"}`}>
                   {s}
                 </button>
               ))}
@@ -102,9 +102,9 @@ export default function AdsHub({ initialAds }: Props) {
           {sorted.length === 0 ? (
             <p className="py-12 text-center text-sm text-stone-500">No ad data yet — run Agent #24 to sync</p>
           ) : (
-            <div className="overflow-x-auto">
-              <div className="min-w-[640px] divide-y divide-stone-800/40">
-                <div className="grid grid-cols-12 px-4 py-2 text-xs font-medium text-stone-500">
+            <div className="overflow-hidden">
+              <div className="w-full divide-y divide-stone-800/40">
+                <div className="grid grid-cols-12 px-2 py-2 text-[11px] font-medium text-stone-500 sm:px-4 sm:text-xs">
                   <span className="col-span-4">Ad</span>
                   <span className="col-span-2 text-right">Spend</span>
                   <span className="col-span-2 text-right">Leads</span>
@@ -131,19 +131,19 @@ function AdRow({ ad }: { ad: MetaAdPerformance }) {
   const ctrColor = ctr < 1 ? "text-red-400" : ctr < 2 ? "text-yellow-400" : "text-green-400";
 
   return (
-    <div className="grid grid-cols-12 items-center px-4 py-2.5 hover:bg-stone-800/30 transition-colors">
+    <div className="grid grid-cols-12 items-center px-2 py-2.5 transition-colors hover:bg-stone-800/30 sm:px-4">
       <div className="col-span-4 min-w-0">
         <div className="truncate text-sm text-stone-200">{ad.adName ?? "Unnamed Ad"}</div>
         <div className="truncate text-xs text-stone-600">{ad.campaignName ?? ""}</div>
       </div>
-      <div className="col-span-2 text-right text-sm text-stone-300">
+      <div className="col-span-2 text-right text-xs text-stone-300 sm:text-sm">
         ₹{spend.toLocaleString("en-IN", { maximumFractionDigits: 0 })}
       </div>
-      <div className="col-span-2 text-right text-sm text-green-400">{ad.leads ?? 0}</div>
-      <div className={`col-span-2 text-right text-sm ${cplColor}`}>
+      <div className="col-span-2 text-right text-xs text-green-400 sm:text-sm">{ad.leads ?? 0}</div>
+      <div className={`col-span-2 text-right text-xs sm:text-sm ${cplColor}`}>
         {cpl ? `₹${cpl.toFixed(0)}` : "—"}
       </div>
-      <div className={`col-span-2 text-right text-sm ${ctrColor}`}>
+      <div className={`col-span-2 text-right text-xs sm:text-sm ${ctrColor}`}>
         {ctr > 0 ? `${ctr.toFixed(2)}%` : "—"}
       </div>
     </div>

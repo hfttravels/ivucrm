@@ -65,7 +65,7 @@ export default function LeadsPipeline({ initialLeads }: Props) {
       </div>
 
       {/* Filter tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0">
+      <div className="flex flex-wrap gap-2">
         <FilterTab label="All" value="all" active={filter} onClick={setFilter} count={leads.length} />
         {STATUSES.map((s) => (
           <FilterTab key={s} label={STATUS_LABELS[s]} value={s} active={filter} onClick={setFilter} count={byStatus[s]?.length ?? 0} />
@@ -244,7 +244,7 @@ function FilterTab({ label, value, active, onClick, count }: { label: string; va
   return (
     <button
       onClick={() => onClick(value)}
-      className={`whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
+      className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${
         active === value ? "bg-stone-700 text-white" : "text-stone-400 hover:text-white"
       }`}
     >
