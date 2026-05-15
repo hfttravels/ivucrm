@@ -1,0 +1,48 @@
+{
+  "name": "HFT — Every 6 Hours",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "hours", "hoursInterval": 6 }] } },
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python pricing/dynamic_pricing.py >> logs/agent-25.log 2>&1"
+      },
+      "name": "Agent #25 — Dynamic Pricing",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 200]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python seo/keyword_researcher.py >> logs/agent-2.log 2>&1"
+      },
+      "name": "Agent #2 — Keyword Researcher",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 340]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python ops/visa_advisory.py >> logs/agent-30.log 2>&1"
+      },
+      "name": "Agent #30 — Visa Advisory",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 480]
+    }
+  ],
+  "connections": {
+    "Every 6 Hours": {
+      "main": [[
+        { "node": "Agent #25 — Dynamic Pricing", "type": "main", "index": 0 },
+        { "node": "Agent #2 — Keyword Researcher", "type": "main", "index": 0 },
+        { "node": "Agent #30 — Visa Advisory", "type": "main", "index": 0 }
+      ]]
+    }
+  }
+}

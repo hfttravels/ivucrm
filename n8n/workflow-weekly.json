@@ -1,0 +1,86 @@
+{
+  "name": "HFT — Weekly Sunday",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "cronExpression", "expression": "0 1 * * 0" }]
+        }
+      },
+      "name": "Weekly Sunday 6:30AM IST",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python email/newsletter_curator.py >> logs/agent-33.log 2>&1"
+      },
+      "name": "Agent #33 — Newsletter",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 100]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python email/email_nurture.py >> logs/agent-32.log 2>&1"
+      },
+      "name": "Agent #32 — Email Nurture",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 220]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python pr/thought_leadership.py >> logs/agent-36.log 2>&1"
+      },
+      "name": "Agent #36 — Thought Leadership",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 340]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python research/trend_forecaster.py >> logs/agent-37.log 2>&1"
+      },
+      "name": "Agent #37 — Trend Forecaster",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 460]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python research/compliance.py >> logs/agent-39.log 2>&1"
+      },
+      "name": "Agent #39 — Compliance",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 580]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python seo/geo_specialist.py >> logs/agent-6.log 2>&1"
+      },
+      "name": "Agent #6 — GEO Specialist",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 700]
+    }
+  ],
+  "connections": {
+    "Weekly Sunday 6:30AM IST": {
+      "main": [[
+        { "node": "Agent #33 — Newsletter", "type": "main", "index": 0 },
+        { "node": "Agent #32 — Email Nurture", "type": "main", "index": 0 },
+        { "node": "Agent #36 — Thought Leadership", "type": "main", "index": 0 },
+        { "node": "Agent #37 — Trend Forecaster", "type": "main", "index": 0 },
+        { "node": "Agent #39 — Compliance", "type": "main", "index": 0 },
+        { "node": "Agent #6 — GEO Specialist", "type": "main", "index": 0 },
+        { "node": "Agent #13 — Booking Abandonment", "type": "main", "index": 0 },
+        { "node": "Agent #19 — Influencer Outreach", "type": "main", "index": 0 },
+        { "node": "Agent #34 — PR Outreach", "type": "main", "index": 0 },
+        { "node": "Agent #38 — Customer Persona", "type": "main", "index": 0 }
+      ]]
+    }
+  }
+}

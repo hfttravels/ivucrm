@@ -1,0 +1,86 @@
+{
+  "name": "HFT — Daily 8AM IST",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "cronExpression", "expression": "30 2 * * *" }]
+        }
+      },
+      "name": "Daily 8AM IST",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python pricing/revenue_forecast.py >> logs/agent-26.log 2>&1"
+      },
+      "name": "Agent #26 — Revenue Forecast",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 100]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python seo/seo_strategist.py >> logs/agent-1.log 2>&1"
+      },
+      "name": "Agent #1 — SEO Strategist",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 220]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python seo/content_optimiser.py >> logs/agent-3.log 2>&1"
+      },
+      "name": "Agent #3 — Content Optimiser",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 340]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python seo/analytics_manager.py >> logs/agent-8.log 2>&1"
+      },
+      "name": "Agent #8 — Analytics Manager",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 460]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python pr/review_reputation.py >> logs/agent-35.log 2>&1"
+      },
+      "name": "Agent #35 — Review & Reputation",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 580]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python ops/vendor_monitor.py >> logs/agent-29.log 2>&1"
+      },
+      "name": "Agent #29 — Vendor Monitor",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [480, 700]
+    }
+  ],
+  "connections": {
+    "Daily 8AM IST": {
+      "main": [[
+        { "node": "Agent #26 — Revenue Forecast", "type": "main", "index": 0 },
+        { "node": "Agent #1 — SEO Strategist", "type": "main", "index": 0 },
+        { "node": "Agent #3 — Content Optimiser", "type": "main", "index": 0 },
+        { "node": "Agent #8 — Analytics Manager", "type": "main", "index": 0 },
+        { "node": "Agent #35 — Review & Reputation", "type": "main", "index": 0 },
+        { "node": "Agent #29 — Vendor Monitor", "type": "main", "index": 0 },
+        { "node": "Agent #5 — AEO Specialist", "type": "main", "index": 0 },
+        { "node": "Agent #10 — Content Auditor", "type": "main", "index": 0 },
+        { "node": "Agent #12 — CRO Specialist", "type": "main", "index": 0 },
+        { "node": "Agent #31 — Customer Experience", "type": "main", "index": 0 }
+      ]]
+    }
+  }
+}

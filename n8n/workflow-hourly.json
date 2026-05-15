@@ -1,0 +1,43 @@
+{
+  "name": "HFT — Hourly Agents",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "hours", "hoursInterval": 1 }] } },
+      "name": "Every Hour",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": { "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python seo/competitor_intel.py >> logs/agent-9.log 2>&1" },
+      "name": "Agent #9 — Competitor Intel", "type": "n8n-nodes-base.executeCommand", "typeVersion": 1, "position": [480, 100]
+    },
+    {
+      "parameters": { "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python main.py >> logs/agent-27.log 2>&1" },
+      "name": "Agent #27 — Fill Rate", "type": "n8n-nodes-base.executeCommand", "typeVersion": 1, "position": [480, 220]
+    },
+    {
+      "parameters": { "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python leads/whatsapp_alerts.py >> logs/agent-22.log 2>&1" },
+      "name": "Agent #22 — WhatsApp Alerts", "type": "n8n-nodes-base.executeCommand", "typeVersion": 1, "position": [480, 340]
+    },
+    {
+      "parameters": { "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python social/social_listening.py >> logs/agent-17.log 2>&1" },
+      "name": "Agent #17 — Social Listening", "type": "n8n-nodes-base.executeCommand", "typeVersion": 1, "position": [480, 460]
+    },
+    {
+      "parameters": { "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python ops/meta_ads_intelligence.py >> logs/agent-24.log 2>&1" },
+      "name": "Agent #24 — Meta Ads Intelligence", "type": "n8n-nodes-base.executeCommand", "typeVersion": 1, "position": [480, 580]
+    }
+  ],
+  "connections": {
+    "Every Hour": {
+      "main": [[
+        { "node": "Agent #9 — Competitor Intel", "type": "main", "index": 0 },
+        { "node": "Agent #27 — Fill Rate", "type": "main", "index": 0 },
+        { "node": "Agent #22 — WhatsApp Alerts", "type": "main", "index": 0 },
+        { "node": "Agent #17 — Social Listening", "type": "main", "index": 0 },
+        { "node": "Agent #24 — Meta Ads Intelligence", "type": "main", "index": 0 }
+      ]]
+    }
+  }
+}

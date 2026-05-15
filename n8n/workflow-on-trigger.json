@@ -1,0 +1,90 @@
+{
+  "name": "HFT — On-Trigger Webhook",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "hft-trigger",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "hft-trigger"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [{ "value1": "={{ $json.agent }}", "value2": "instagram_dm" }]
+        }
+      },
+      "name": "Route: Instagram DM",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [480, 200]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [{ "value1": "={{ $json.agent }}", "value2": "lead_scoring" }]
+        }
+      },
+      "name": "Route: Lead Scoring",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [480, 340]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [{ "value1": "={{ $json.agent }}", "value2": "itinerary" }]
+        }
+      },
+      "name": "Route: Itinerary",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [480, 480]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python social/instagram_dm.py >> logs/agent-20.log 2>&1"
+      },
+      "name": "Agent #20 — Instagram DM",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [720, 200]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python leads/lead_scoring.py >> logs/agent-21.log 2>&1"
+      },
+      "name": "Agent #21 — Lead Scoring",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [720, 340]
+    },
+    {
+      "parameters": {
+        "command": "cd /opt/hft-agents && source .venv/bin/activate && PYTHONPATH=src python ops/itinerary_builder.py >> logs/agent-28.log 2>&1"
+      },
+      "name": "Agent #28 — Itinerary Builder",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [720, 480]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[
+        { "node": "Route: Instagram DM", "type": "main", "index": 0 },
+        { "node": "Route: Lead Scoring", "type": "main", "index": 0 },
+        { "node": "Route: Itinerary", "type": "main", "index": 0 }
+      ]]
+    },
+    "Route: Instagram DM": { "main": [[{ "node": "Agent #20 — Instagram DM", "type": "main", "index": 0 }]] },
+    "Route: Lead Scoring": { "main": [[{ "node": "Agent #21 — Lead Scoring", "type": "main", "index": 0 }]] },
+    "Route: Itinerary": { "main": [[{ "node": "Agent #28 — Itinerary Builder", "type": "main", "index": 0 }]] }
+  }
+}

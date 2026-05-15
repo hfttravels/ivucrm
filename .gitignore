@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+apps/web/.next/
+apps/web/out/
+
+# Environment files — NEVER commit real .env
+.env
+.env.local
+.env.production
+apps/web/.env
+apps/web/.env.local
+apps/web/.env.production
+
+# Drizzle migrations (commit these — they are your DB history)
+# apps/web/src/db/migrations/ ← intentionally NOT ignored
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+agents/.venv/
+*.egg-info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
