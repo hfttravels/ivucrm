@@ -1,5 +1,12 @@
 import { db } from "@/db";
-import { agents, notifications, contentQueue } from "@/db/schema";
+import {
+  agents,
+  notifications,
+  contentQueue,
+  type Agent,
+  type ContentQueue,
+  type Notification,
+} from "@/db/schema";
 import { desc, eq } from "drizzle-orm";
 import AgentFeed from "@/components/crm/agent-feed";
 import ApprovalQueue from "@/components/crm/approval-queue";
@@ -8,22 +15,39 @@ import QuickActions from "@/components/crm/quick-actions";
 
 export const dynamic = "force-dynamic";
 
+type DashboardData = {
+  agentsList: Agent[];
+  notificationsList: Notification[];
+  pendingContent: ContentQueue[];
+};
+
+async function loadDashboardData(): Promise<DashboardData> {
+  try {
+    const [agentsList, notificationsList, pendingContent] = await Promise.all([
+      db.select().from(agents).orderBy(agents.agentNumber),
+      db
+        .select()
+        .from(notifications)
+        .where(eq(notifications.isRead, false))
+        .orderBy(desc(notifications.createdAt))
+        .limit(20),
+      db
+        .select()
+        .from(contentQueue)
+        .where(eq(contentQueue.status, "pending_review"))
+        .orderBy(desc(contentQueue.createdAt))
+        .limit(10),
+    ]);
+
+    return { agentsList, notificationsList, pendingContent };
+  } catch (error) {
+    console.error("CRM dashboard data unavailable:", error);
+    return { agentsList: [], notificationsList: [], pendingContent: [] };
+  }
+}
+
 export default async function CommandCenterPage() {
-  const [agentsList, notificationsList, pendingContent] = await Promise.all([
-    db.select().from(agents).orderBy(agents.agentNumber),
-    db
-      .select()
-      .from(notifications)
-      .where(eq(notifications.isRead, false))
-      .orderBy(desc(notifications.createdAt))
-      .limit(20),
-    db
-      .select()
-      .from(contentQueue)
-      .where(eq(contentQueue.status, "pending_review"))
-      .orderBy(desc(contentQueue.createdAt))
-      .limit(10),
-  ]);
+  const { agentsList, notificationsList, pendingContent } = await loadDashboardData();
 
   return (
     <div className="h-screen overflow-y-auto bg-stone-950 p-8">
